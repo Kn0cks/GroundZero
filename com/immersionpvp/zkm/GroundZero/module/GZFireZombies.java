@@ -99,7 +99,9 @@ public class GZFireZombies extends GZModule implements Listener {
 		if (!event.getEntityType().equals(EntityType.ZOMBIE))
 			return;
 		if (!event.getCause().equals(DamageCause.FIRE) && 
-				!event.getCause().equals(DamageCause.FIRE_TICK))
+				!event.getCause().equals(DamageCause.FIRE_TICK) &&
+				!event.getCause().equals(DamageCause.LAVA) && 
+				!event.getCause().equals(DamageCause.LIGHTNING))
 			return;
 		if (!GroundZero.getMobRegister().
 				isEntityInsideAccount(MOB_REGISTER_INFO, event.getEntity()))
