@@ -43,7 +43,7 @@ public class GZPlagueZombies extends GZModule implements Listener {
 	public void onZombieSpawn(CreatureSpawnEvent event) {
 		if (!event.getEntityType().equals(EntityType.ZOMBIE))
 			return;
-		if (rng.nextInt(100) > 25)
+		if (rng.nextInt(100) > 2)
 			return;
 		if (GZFireZombies.isHellZombie(event.getEntity()))
 			return;
@@ -85,8 +85,6 @@ public class GZPlagueZombies extends GZModule implements Listener {
 		if (!event.getDamager().getType().equals(EntityType.ZOMBIE))
 			return;
 		if (!isPlagueZombie(event.getDamager()))
-			return;
-		if (rng.nextInt(100) > 5)
 			return;
 		PotionEffectType type = PotionEffectType.CONFUSION;
 		((LivingEntity)event.getEntity()).addPotionEffect(type.createEffect(2500, 1));
