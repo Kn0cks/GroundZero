@@ -10,9 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.immersionpvp.zkm.GroundZero.GZModule;
@@ -110,6 +112,18 @@ public class GZFireZombies extends GZModule implements Listener, Runnable {
 		event.setDamage(0D);
 		event.setCancelled(true);
 	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onZombieAttacked(EntityDamageByEntityEvent event) {
+		if (!event.getEntity().getType().equals(EntityType.ZOMBIE))
+			return;
+		if (!event.getDamager().getType().equals(EntityType.PLAYER))
+			return;
+		if (!isHellZombie(event.getEntity()))
+			return;
+		if (event.getEntity().getWorld().hasStorm())
+			event.setDamage(event.getDamage() * 1.4);
+	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onZombieDeath(EntityDeathEvent event) {
@@ -136,6 +150,15 @@ public class GZFireZombies extends GZModule implements Listener, Runnable {
 		if (addedItem != null)
 			event.getDrops().add(addedItem);
 		GroundZero.getMobRegister().removeEntityFromAccount(MOB_REGISTER_INFO, event.getEntity());
+	}
+	
+	@EventHandler
+	public void onWeatherChange(WeatherChangeEvent event) {
+		if (!event.toWeatherState())
+			for (GZMobInfo info : 
+				GroundZero.getMobRegister().getAccounts().get(MOB_REGISTER_INFO).
+					getAccountContents())
+				info.getMob().setFireTicks(Integer.MAX_VALUE);
 	}
 	
 	@Override

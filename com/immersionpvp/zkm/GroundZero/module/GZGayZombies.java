@@ -24,7 +24,6 @@ import com.immersionpvp.zkm.GroundZero.GroundZero;
 /**
  * Those damn homosexuals - Can't they keep their hands off of anything?
  * @author calhal
- *
  */
 public class GZGayZombies extends GZModule implements Listener {
 
@@ -54,7 +53,9 @@ public class GZGayZombies extends GZModule implements Listener {
 		"MISOGYNY!",
 		"Can you spot the gay man? Yes, he's the one sucking dicks.",
 		"Do you like my MLP collection?",
-		"gibe money pl0x"
+		"gibe money pl0x",
+		"br?",
+		"I touched a boy and I liked it~",
 	};
 	
 	public GZGayZombies() {
