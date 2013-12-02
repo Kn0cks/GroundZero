@@ -5,8 +5,8 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.SmallFireball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -119,7 +119,7 @@ public class GZFireZombies extends GZModule implements Listener {
 			event.setDamage(event.getDamage() * 1.4);
 		if (rng.nextInt(100) > 5)
 			return;
-		((LivingEntity)event.getEntity()).launchProjectile(Fireball.class);
+		((LivingEntity)event.getEntity()).launchProjectile(SmallFireball.class);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
