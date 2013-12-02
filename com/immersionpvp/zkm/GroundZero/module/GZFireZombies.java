@@ -119,7 +119,7 @@ public class GZFireZombies extends GZModule implements Listener {
 			return;
 		if (event.getEntity().getWorld().hasStorm())
 			event.setDamage(event.getDamage() * 1.4);
-		if (rng.nextInt(100) > 5)
+		if (rng.nextInt(100) > 45)
 			return;
 		((LivingEntity)event.getEntity()).launchProjectile(SmallFireball.class);
 	}
