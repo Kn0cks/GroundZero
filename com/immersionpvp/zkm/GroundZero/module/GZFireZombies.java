@@ -123,6 +123,20 @@ public class GZFireZombies extends GZModule implements Listener {
 			return;
 		((LivingEntity)event.getEntity()).launchProjectile(SmallFireball.class);
 	}
+	
+	@EventHandler
+	public void onZombieAttackPlayer(EntityDamageByEntityEvent event) {
+		if (!event.getEntityType().equals(EntityType.PLAYER))
+			return;
+		if (!event.getDamager().getType().equals(EntityType.ZOMBIE))
+			return;
+		if (!isHellZombie(event.getDamager()))
+			return;
+		if (event.getEntity().getWorld().hasStorm())
+			event.setDamage(event.getDamage() * 0.8D);
+		else
+			event.setDamage(event.getDamage() * 1.6D);
+	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onZombieDeath(EntityDeathEvent event) {
