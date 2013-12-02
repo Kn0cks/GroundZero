@@ -2,10 +2,11 @@ package com.immersionpvp.zkm.GroundZero.module;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fireball;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -25,7 +26,7 @@ import com.immersionpvp.zkm.GroundZero.mob.GZMobInfo;
  * This module creates fire zombies which will set you on fire at a touch.
  * @author calhal
  */
-public class GZFireZombies extends GZModule implements Listener, Runnable {
+public class GZFireZombies extends GZModule implements Listener {
 
 	private static final String MOB_REGISTER_INFO = "fire_zombies";
 	private Random rng = new Random();
@@ -50,12 +51,6 @@ public class GZFireZombies extends GZModule implements Listener, Runnable {
 	public void onEnable() {
 		GroundZero.getMobRegister().createAccount(MOB_REGISTER_INFO);
 		GroundZero.registerListener(this);
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(
-				GroundZero.getBukkitPlugin(), 
-				this,
-				0,
-				10000);
-		
 	}
 	
 	@Override
@@ -109,7 +104,6 @@ public class GZFireZombies extends GZModule implements Listener, Runnable {
 		if (!GroundZero.getMobRegister().
 				isEntityInsideAccount(MOB_REGISTER_INFO, event.getEntity()))
 			return;
-		event.setDamage(0D);
 		event.setCancelled(true);
 	}
 	
@@ -123,6 +117,9 @@ public class GZFireZombies extends GZModule implements Listener, Runnable {
 			return;
 		if (event.getEntity().getWorld().hasStorm())
 			event.setDamage(event.getDamage() * 1.4);
+		if (rng.nextInt(100) > 5)
+			return;
+		((LivingEntity)event.getEntity()).launchProjectile(Fireball.class);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -149,6 +146,7 @@ public class GZFireZombies extends GZModule implements Listener, Runnable {
 		}
 		if (addedItem != null)
 			event.getDrops().add(addedItem);
+		event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 0F);
 		GroundZero.getMobRegister().removeEntityFromAccount(MOB_REGISTER_INFO, event.getEntity());
 	}
 	
@@ -159,15 +157,6 @@ public class GZFireZombies extends GZModule implements Listener, Runnable {
 				GroundZero.getMobRegister().getAccounts().get(MOB_REGISTER_INFO).
 					getAccountContents())
 				info.getMob().setFireTicks(Integer.MAX_VALUE);
-	}
-	
-	@Override
-	public void run() {
-		for (GZMobInfo info : 
-			GroundZero.getMobRegister().getAccounts().
-			get(MOB_REGISTER_INFO).getAccountContents()){
-			info.getMob().setFireTicks(Integer.MAX_VALUE);
-		}
 	}
 	
 	public static boolean isHellZombie(Entity e) {
